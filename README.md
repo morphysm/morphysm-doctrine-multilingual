@@ -7,4 +7,5 @@ Multilingual repository for Morphysm Doctrine translations and texts.
 🔗https://morphysm01index.netlify.app/
 
 Full book PDFs and additional materials are available on Ko-fi:
+
 👉 https://ko-fi.com/alexandercripple
