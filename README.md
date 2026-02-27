@@ -1,6 +1,6 @@
 # morphystic-doctrine-multilingual
 
-**Multilingual repository for official Morphysm Doctrine translations and primary texts.**
+**Multilingual repository for official Morphystic Doctrine translations and primary texts.**
 
 ## About
 
