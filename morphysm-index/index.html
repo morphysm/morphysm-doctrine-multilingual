@@ -209,18 +209,178 @@
     <div class="instruction">Select portal to enter index architecture</div>
 
     <script>
+        // --- COSMIC HORROR AUDIO ENGINE ---
+        let audioCtx = null;
+
+        function getAudioCtx() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            return audioCtx;
+        }
+
+        // Deep void resonance on hover — sub-bass drone with slow modulation
+        function playVoidResonance() {
+            const ctx = getAudioCtx();
+            const now = ctx.currentTime;
+            const duration = 2.2;
+
+            // Sub-bass foundation — felt more than heard
+            const sub = ctx.createOscillator();
+            sub.type = 'sine';
+            sub.frequency.setValueAtTime(28, now);
+            sub.frequency.linearRampToValueAtTime(22, now + duration);
+
+            // Second harmonic — slow dying whale
+            const osc2 = ctx.createOscillator();
+            osc2.type = 'sine';
+            osc2.frequency.setValueAtTime(47, now);
+            osc2.frequency.linearRampToValueAtTime(38, now + 1.0);
+            osc2.frequency.linearRampToValueAtTime(52, now + duration);
+
+            // LFO to modulate pitch — breathing, unstable
+            const lfo = ctx.createOscillator();
+            lfo.type = 'sine';
+            lfo.frequency.setValueAtTime(0.3, now);
+            const lfoGain = ctx.createGain();
+            lfoGain.gain.value = 4;
+            lfo.connect(lfoGain);
+            lfoGain.connect(sub.frequency);
+            lfoGain.connect(osc2.frequency);
+
+            // Dark noise — cosmic static, distant interference
+            const bufferSize = ctx.sampleRate * duration;
+            const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+            const data = noiseBuffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1);
+            const noise = ctx.createBufferSource();
+            noise.buffer = noiseBuffer;
+
+            // Low-pass filter — muffle noise into deep rumble
+            const lpFilter = ctx.createBiquadFilter();
+            lpFilter.type = 'lowpass';
+            lpFilter.frequency.setValueAtTime(180, now);
+            lpFilter.frequency.linearRampToValueAtTime(80, now + duration);
+            lpFilter.Q.value = 2.5;
+
+            // Peaking resonance at 60hz — the void speaking
+            const peakFilter = ctx.createBiquadFilter();
+            peakFilter.type = 'peaking';
+            peakFilter.frequency.value = 60;
+            peakFilter.gain.value = 12;
+            peakFilter.Q.value = 1.2;
+
+            // Gain envelopes — slow fade in, long tail
+            const gainMain = ctx.createGain();
+            gainMain.gain.setValueAtTime(0, now);
+            gainMain.gain.linearRampToValueAtTime(0.07, now + 0.4);
+            gainMain.gain.linearRampToValueAtTime(0.05, now + 1.5);
+            gainMain.gain.linearRampToValueAtTime(0, now + duration);
+
+            const gainNoise = ctx.createGain();
+            gainNoise.gain.setValueAtTime(0, now);
+            gainNoise.gain.linearRampToValueAtTime(0.02, now + 0.3);
+            gainNoise.gain.linearRampToValueAtTime(0, now + duration);
+
+            // Graph
+            sub.connect(gainMain);
+            osc2.connect(gainMain);
+            gainMain.connect(peakFilter);
+            peakFilter.connect(ctx.destination);
+
+            noise.connect(lpFilter);
+            lpFilter.connect(gainNoise);
+            gainNoise.connect(ctx.destination);
+
+            sub.start(now); sub.stop(now + duration);
+            osc2.start(now); osc2.stop(now + duration);
+            lfo.start(now); lfo.stop(now + duration);
+            noise.start(now); noise.stop(now + duration);
+        }
+
+        // Portal activation — the threshold opening, something vast awakening
+        function playPortalOpen() {
+            const ctx = getAudioCtx();
+            const now = ctx.currentTime;
+            const duration = 2.8;
+
+            // Descending tone — falling into depth
+            const descent = ctx.createOscillator();
+            descent.type = 'sine';
+            descent.frequency.setValueAtTime(110, now);
+            descent.frequency.exponentialRampToValueAtTime(18, now + duration);
+
+            // Inharmonic upper partial — alien, wrong interval
+            const alien = ctx.createOscillator();
+            alien.type = 'triangle';
+            alien.frequency.setValueAtTime(173, now); // intentionally non-harmonic
+            alien.frequency.exponentialRampToValueAtTime(29, now + duration);
+
+            // Deep rumble — tectonic shift
+            const rumble = ctx.createOscillator();
+            rumble.type = 'sawtooth';
+            rumble.frequency.setValueAtTime(35, now);
+            rumble.frequency.linearRampToValueAtTime(20, now + duration);
+
+            // LFO tremolo — pulse of something alive
+            const tremolo = ctx.createOscillator();
+            tremolo.type = 'sine';
+            tremolo.frequency.setValueAtTime(7, now);
+            tremolo.frequency.linearRampToValueAtTime(1.5, now + duration);
+            const tremoloGain = ctx.createGain();
+            tremoloGain.gain.value = 0.4;
+            tremolo.connect(tremoloGain);
+
+            // Reverb simulation — convolution-like decay via delay feedback
+            const delay = ctx.createDelay(2.0);
+            delay.delayTime.value = 0.18;
+            const feedback = ctx.createGain();
+            feedback.gain.value = 0.65;
+            delay.connect(feedback);
+            feedback.connect(delay);
+
+            // Low pass to keep it cavernous
+            const cave = ctx.createBiquadFilter();
+            cave.type = 'lowpass';
+            cave.frequency.setValueAtTime(300, now);
+            cave.frequency.linearRampToValueAtTime(60, now + duration);
+
+            // Master gain
+            const master = ctx.createGain();
+            master.gain.setValueAtTime(0, now);
+            master.gain.linearRampToValueAtTime(0.35, now + 0.08);
+            master.gain.linearRampToValueAtTime(0.28, now + 1.2);
+            master.gain.linearRampToValueAtTime(0, now + duration);
+
+            tremoloGain.connect(master.gain); // tremolo modulates master
+
+            descent.connect(master);
+            alien.connect(master);
+            rumble.connect(master);
+            master.connect(cave);
+            cave.connect(delay);
+            cave.connect(ctx.destination);
+            delay.connect(ctx.destination);
+
+            descent.start(now); descent.stop(now + duration);
+            alien.start(now); alien.stop(now + duration);
+            rumble.start(now); rumble.stop(now + duration);
+            tremolo.start(now); tremolo.stop(now + duration);
+        }
+
+        // --- PORTAL LOGIC ---
         function fallInto(element, url) {
+            playPortalOpen();
             element.classList.add('falling');
-            
             setTimeout(() => {
                 window.location.href = url;
             }, 800);
         }
 
-        // Subtle ambient animation on load
+        // Attach hover sound to all mirrors
         document.addEventListener('DOMContentLoaded', () => {
             const mirrors = document.querySelectorAll('.volcanic-mirror');
+
             mirrors.forEach((mirror, index) => {
+                // Entrance animation
                 setTimeout(() => {
                     mirror.style.opacity = '0';
                     mirror.style.transform = 'scale(0.8)';
@@ -230,6 +390,11 @@
                         mirror.style.transform = 'scale(1)';
                     }, 50);
                 }, index * 100);
+
+                // Hover sound
+                mirror.addEventListener('mouseenter', () => {
+                    playVoidResonance();
+                });
             });
         });
     </script>
