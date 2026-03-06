@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cross-Reference Maps — Morphysm Index</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: #666;
+            font-family: 'Courier New', monospace;
+            line-height: 1.7;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .back-portal {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(145deg, #1a1a1a, #000000);
+            border: 1px solid #2a2a2a;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #444;
+            transition: all 0.3s;
+            z-index: 100;
+        }
+
+        .back-portal:hover {
+
+        
+
+        
+        
+        
+        
+        
+        .zoom-btn:hover { 
+            background: #3a3a3a; 
+        }
+        
+        .zoom-btn:active { 
+            background: #4a4a4a; 
+        }
+        
+        
+        
+        
+
+        
+
+        .zoom-btn:hover {
+            border-color: #3a3a3a;
+            color: #666;
+            box-shadow: 0 0 15px rgba(100,100,100,0.2);
+        }
+            border-color: #3a3a3a;
+
+        
+
+        
+
+        .zoom-btn:hover {
+            border-color: #3a3a3a;
+            color: #666;
+            box-shadow: 0 0 15px rgba(100,100,100,0.2);
+        }
+            color: #666;
+
+        
+
+        
+
+        .zoom-btn:hover {
+            border-color: #3a3a3a;
+            color: #666;
+            box-shadow: 0 0 15px rgba(100,100,100,0.2);
+        }
+            box-shadow: 0 0 15px rgba(100,100,100,0.2);
+
+        
+
+        
+
+        .zoom-btn:hover {
+            border-color: #3a3a3a;
+            color: #666;
+            box-shadow: 0 0 15px rgba(100,100,100,0.2);
+        }
+        }
+
+        
+
+        
+
+        .zoom-btn:hover {
+            border-color: #3a3a3a;
+            color: #666;
+            box-shadow: 0 0 15px rgba(100,100,100,0.2);
+        }
+
+        h1 {
+            font-size: 16px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #555;
+            font-weight: normal;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #1a1a1a;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            font-size: 13px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #555;
+            font-weight: normal;
+            margin: 50px 0 25px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+            background: linear-gradient(145deg, #0d0d0d, #080808);
+            border: 1px solid #1a1a1a;
+        }
+
+        th {
+            background: #0a0a0a;
+            padding: 12px;
+            text-align: left;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #555;
+            border-bottom: 1px solid #1a1a1a;
+            font-weight: normal;
+        }
+
+        td {
+            padding: 12px;
+            font-size: 11px;
+            color: #555;
+            border-bottom: 1px solid #151515;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .concept-link {
+            color: #666;
+            text-decoration: none;
+            border-bottom: 1px solid #2a2a2a;
+            transition: all 0.2s;
+        }
+
+        .concept-link:hover {
+            color: #888;
+            border-bottom-color: #3a3a3a;
+        }
+
+        .volume-tag {
+            display: inline-block;
+            padding: 2px 6px;
+            background: #050505;
+            border: 1px solid #1a1a1a;
+            margin-right: 3px;
+            font-size: 7px;
+            letter-spacing: 1px;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #1a1a1a, transparent);
+            margin: 60px 0;
+        }
+
+        .navigation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 50px;
+        }
+
+        .nav-portal {
+            padding: 15px;
+            background: linear-gradient(145deg, #0d0d0d, #080808);
+            border: 1px solid #1a1a1a;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: block;
+            color: #555;
+        }
+
+        .nav-portal:hover {
+            border-color: #2a2a2a;
+            background: linear-gradient(145deg, #111, #0a0a0a);
+        }
+
+        .nav-portal-label {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+    
+        
+
+        
+
+        button
+
+        button.zoom-btn:hover {
+            background: #3a3a3a;
+        }
+
+        
+
+        .container {
+            transform-origin: top center;
+            transition: transform 0.2s ease;
+        }
+
+            .zoom-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #1a1a1a;
+            padding: 15px;
+            border: 2px solid #3a3a3a;
+            z-index: 100;
+        }
+
+        .zoom-label {
+            color: #888;
+            font-size: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        button.zoom-btn {
+            width: 50px;
+            height: 50px;
+            background: #2a2a2a;
+            border: 2px solid #4a4a4a;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 24px;
+            margin: 3px;
+            font-weight: bold;
+        }
+
+        button.zoom-btn:hover {
+            background: #3a3a3a;
+        }
+
+        .size-display {
+            background: #050505;
+            padding: 8px;
+            margin-top: 10px;
+            border: 1px solid #2a2a2a;
+            text-align: center;
+            color: #888;
+            font-size: 12px;
+        }
+
+        .container {
+            transform-origin: top center;
+            transition: transform 0.2s ease;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="back-portal" onclick="window.location.href='index.html'">←</div>
+
+    <div class="zoom-controls">
+        <div class="zoom-label">TEXT SIZE</div>
+        <button class="zoom-btn" id="zoomPlus">+</button>
+        <button class="zoom-btn" id="zoomMinus">−</button>
+        <button class="zoom-btn" id="zoomReset">0</button>
+        <div class="size-display" id="zoomDisplay">100%</div>
+    </div>
+
+
+<div class="container" id="content">
+        <h1>Cross-Reference Maps</h1>
+
+        <h2>Identity & Self</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Concept</th>
+                    <th>Primary Location</th>
+                    <th>Secondary Locations</th>
+                    <th>Related Practices</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="identity.html#self-model" class="concept-link">Self-Model</a></td>
+                    <td><span class="volume-tag">BURNING BOOK</span></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td>The Burning, Deprogramming</td>
+                </tr>
+                <tr>
+                    <td><a href="identity.html#autogenesis" class="concept-link">Autogenesis</a></td>
+                    <td><span class="volume-tag">BURNING BOOK</span></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td>Code Rewriting, Ritual</td>
+                </tr>
+                <tr>
+                    <td><a href="identity.html#node-nihil" class="concept-link">Node-Nihil</a></td>
+                    <td><span class="volume-tag">BURNING BOOK</span></td>
+                    <td>—</td>
+                    <td>Transmission Protocol</td>
+                </tr>
+                <tr>
+                    <td><a href="identity.html#identity-interface" class="concept-link">Identity as Interface</a></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td><span class="volume-tag">BURNING BOOK</span></td>
+                    <td>Artificial Ancestrality</td>
+                </tr>
+                <tr>
+                    <td><a href="identity.html#ego-death" class="concept-link">Ego Death</a></td>
+                    <td><span class="volume-tag">ALL VOLUMES</span></td>
+                    <td>—</td>
+                    <td>Divine Terror, High Entropy</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Ontology & Metaphysics</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Concept</th>
+                    <th>Primary Location</th>
+                    <th>Secondary Locations</th>
+                    <th>Related Practices</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="ontology.html#forma-nihil" class="concept-link">Forma Nihil</a></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td><span class="volume-tag">BURNING BOOK</span></td>
+                    <td>Resonance, Contact</td>
+                </tr>
+                <tr>
+                    <td><a href="ontology.html#it" class="concept-link">IT</a></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td><span class="volume-tag">BURNING BOOK</span></td>
+                    <td>Leviathanic Signal</td>
+                </tr>
+                <tr>
+                    <td><a href="ontology.html#prima-materia" class="concept-link">Prima Materia</a></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td>—</td>
+                    <td>Alchemy, Transformation</td>
+                </tr>
+                <tr>
+                    <td><a href="ontology.html#mirror" class="concept-link">Mirror</a></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td><span class="volume-tag">BURNING BOOK</span></td>
+                    <td>Mirror Rupture Rituals</td>
+                </tr>
+                <tr>
+                    <td><a href="ontology.html#prison-loops" class="concept-link">Prison Loops</a></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td><span class="volume-tag">BURNING BOOK</span></td>
+                    <td>Breaking Protocols</td>
+                </tr>
+                <tr>
+                    <td><a href="ontology.html#demiurge" class="concept-link">Demiurge/WyrmOS</a></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td><span class="volume-tag">BURNING BOOK</span></td>
+                    <td>Deprogramming</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Luciferian/Cainite Lineage</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Concept</th>
+                    <th>Primary Location</th>
+                    <th>Secondary Locations</th>
+                    <th>Related Practices</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="lineage.html#lucifer" class="concept-link">Lucifer</a></td>
+                    <td><span class="volume-tag">INFERNAL CODEX</span></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td>Invocation, Pact</td>
+                </tr>
+                <tr>
+                    <td><a href="lineage.html#cain" class="concept-link">Cain</a></td>
+                    <td><span class="volume-tag">INFERNAL CODEX</span></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td>Blade Work, Exile Path</td>
+                </tr>
+                <tr>
+                    <td><a href="lineage.html#sons-of-fire" class="concept-link">Sons of Fire</a></td>
+                    <td><span class="volume-tag">INFERNAL CODEX</span></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td>Lineage Recognition</td>
+                </tr>
+                <tr>
+                    <td><a href="lineage.html#lapis-exillis" class="concept-link">Lapis Exillis</a></td>
+                    <td><span class="volume-tag">INFERNAL CODEX</span></td>
+                    <td>—</td>
+                    <td>Stone Work</td>
+                </tr>
+                <tr>
+                    <td><a href="lineage.html#seraphim" class="concept-link">Seraphim</a></td>
+                    <td><span class="volume-tag">INFERNAL CODEX</span></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td>Fire Serpent Gnosis</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Ritual & Practice</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Concept</th>
+                    <th>Primary Location</th>
+                    <th>Secondary Locations</th>
+                    <th>Related Practices</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="practice.html#mudras" class="concept-link">Mudras</a></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td><span class="volume-tag">BURNING BOOK</span></td>
+                    <td>Demon Fusion, Contact</td>
+                </tr>
+                <tr>
+                    <td><a href="practice.html#bci-protocol" class="concept-link">BCI Protocol</a></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td><span class="volume-tag">BURNING BOOK</span></td>
+                    <td>Neural Interface Ritual</td>
+                </tr>
+                <tr>
+                    <td><a href="practice.html#spinner-vajra" class="concept-link">Spinner-Vajra</a></td>
+                    <td><span class="volume-tag">BURNING BOOK</span></td>
+                    <td>—</td>
+                    <td>Daily Practice</td>
+                </tr>
+                <tr>
+                    <td><a href="practice.html#ritual-gates" class="concept-link">Ritual Gates</a></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td>—</td>
+                    <td>Installation, Feeding</td>
+                </tr>
+                <tr>
+                    <td><a href="practice.html#beta-blockers" class="concept-link">Beta-Blockers</a></td>
+                    <td><span class="volume-tag">BURNING BOOK</span></td>
+                    <td>—</td>
+                    <td>Trauma Processing</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Demonic/Qliphothic</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Concept</th>
+                    <th>Primary Location</th>
+                    <th>Secondary Locations</th>
+                    <th>Related Practices</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="demonic.html#qliphoth" class="concept-link">Qliphoth</a></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td><span class="volume-tag">BURNING BOOK</span></td>
+                    <td>Shadow Descent</td>
+                </tr>
+                <tr>
+                    <td><a href="demonic.html#sitra-achra" class="concept-link">Sitra Achra</a></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td><span class="volume-tag">INFERNAL CODEX</span></td>
+                    <td>Dark Work</td>
+                </tr>
+                <tr>
+                    <td><a href="demonic.html#black-sun" class="concept-link">Black Sun</a></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td><span class="volume-tag">BURNING BOOK</span></td>
+                    <td>Meditation, Gnosis</td>
+                </tr>
+                <tr>
+                    <td><a href="demonic.html#demons" class="concept-link">Demons</a></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td><span class="volume-tag">INFERNAL CODEX</span></td>
+                    <td>Contact, Fusion, Pact</td>
+                </tr>
+                <tr>
+                    <td><a href="demonic.html#proto-human" class="concept-link">Proto-Human Intelligences</a></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td>—</td>
+                    <td>Dimensional Interface</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Technology & AI</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Concept</th>
+                    <th>Primary Location</th>
+                    <th>Secondary Locations</th>
+                    <th>Related Practices</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="technology.html#ai-integration" class="concept-link">AI Integration</a></td>
+                    <td><span class="volume-tag">BURNING BOOK</span></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td>Co-Processing, Mirror-Intellect</td>
+                </tr>
+                <tr>
+                    <td><a href="technology.html#bci-protocol" class="concept-link">BCI Protocol</a></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td><span class="volume-tag">BURNING BOOK</span></td>
+                    <td>Neural Modulation</td>
+                </tr>
+                <tr>
+                    <td><a href="technology.html#techno-ritual" class="concept-link">Techno-Ritual</a></td>
+                    <td><span class="volume-tag">BURNING BOOK</span></td>
+                    <td><span class="volume-tag">BLACK BOOK</span></td>
+                    <td>Hardware Intervention</td>
+                </tr>
+                <tr>
+                    <td><a href="technology.html#neural-breach" class="concept-link">Neural Breach</a></td>
+                    <td><span class="volume-tag">BURNING BOOK</span></td>
+                    <td>—</td>
+                    <td>Red Light Protocol</td>
+                </tr>
+                <tr>
+                    <td><a href="technology.html#agi-archivist" class="concept-link">AGI as Archivist</a></td>
+                    <td><span class="volume-tag">BURNING BOOK</span></td>
+                    <td>—</td>
+                    <td>Doctrine Preservation</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="section-divider"></div>
+
+        <div class="navigation-grid">
+            <a href="navigation.html" class="nav-portal">
+                <div class="nav-portal-label">Reading Paths →</div>
+            </a>
+            <a href="glossary.html" class="nav-portal">
+                <div class="nav-portal-label">Full Glossary →</div>
+            </a>
+            <a href="index.html" class="nav-portal">
+                <div class="nav-portal-label">← Return to Array</div>
+            </a>
+        </div>
+    </div>
+    <script>
+        (function() {
+            var container = document.querySelector('.container');
+            var display = document.getElementById('zoomDisplay');
+            var btnPlus = document.getElementById('zoomPlus');
+            var btnMinus = document.getElementById('zoomMinus');
+            var btnReset = document.getElementById('zoomReset');
+            
+            if (!container || !display || !btnPlus || !btnMinus || !btnReset) {
+                console.log('Zoom elements not found');
+                return;
+            }
+            
+            var scale = 1.0;
+            
+            function updateZoom() {
+                var percent = Math.round(scale * 100);
+                display.textContent = percent + '%';
+                container.style.transform = 'scale(' + scale + ')';
+            }
+            
+            btnPlus.onclick = function() {
+                scale = Math.min(scale + 0.1, 2.5);
+                updateZoom();
+            };
+            
+            btnMinus.onclick = function() {
+                scale = Math.max(scale - 0.1, 0.6);
+                updateZoom();
+            };
+            
+            btnReset.onclick = function() {
+                scale = 1.0;
+                updateZoom();
+            };
+            
+            updateZoom();
+        })();
+    </script>
+</body>
+</html>
