@@ -296,74 +296,73 @@
             noise.start(now); noise.stop(now + duration);
         }
 
-        // Portal activation — the threshold opening, something vast awakening
+        // Portal activation — wind rushing through on click
         function playPortalOpen() {
             const ctx = getAudioCtx();
             const now = ctx.currentTime;
-            const duration = 2.8;
+            const duration = 2.5;
 
-            // Descending tone — falling into depth
-            const descent = ctx.createOscillator();
-            descent.type = 'sine';
-            descent.frequency.setValueAtTime(110, now);
-            descent.frequency.exponentialRampToValueAtTime(18, now + duration);
+            // White noise source — the wind itself
+            const bufferSize = ctx.sampleRate * duration;
+            const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+            const data = noiseBuffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+            const noise = ctx.createBufferSource();
+            noise.buffer = noiseBuffer;
 
-            // Inharmonic upper partial — alien, wrong interval
-            const alien = ctx.createOscillator();
-            alien.type = 'triangle';
-            alien.frequency.setValueAtTime(173, now); // intentionally non-harmonic
-            alien.frequency.exponentialRampToValueAtTime(29, now + duration);
+            // Bandpass — shapes noise into wind whoosh
+            const band = ctx.createBiquadFilter();
+            band.type = 'bandpass';
+            band.frequency.setValueAtTime(400, now);
+            band.frequency.linearRampToValueAtTime(1800, now + 0.6);
+            band.frequency.linearRampToValueAtTime(300, now + duration);
+            band.Q.value = 0.6;
 
-            // Deep rumble — tectonic shift
+            // Second bandpass layer — layered wind texture
+            const band2 = ctx.createBiquadFilter();
+            band2.type = 'bandpass';
+            band2.frequency.setValueAtTime(200, now);
+            band2.frequency.linearRampToValueAtTime(900, now + 0.8);
+            band2.frequency.linearRampToValueAtTime(150, now + duration);
+            band2.Q.value = 1.2;
+
+            // Low rumble underneath — pressure of wind
             const rumble = ctx.createOscillator();
-            rumble.type = 'sawtooth';
-            rumble.frequency.setValueAtTime(35, now);
-            rumble.frequency.linearRampToValueAtTime(20, now + duration);
+            rumble.type = 'sine';
+            rumble.frequency.setValueAtTime(55, now);
+            rumble.frequency.linearRampToValueAtTime(30, now + duration);
 
-            // LFO tremolo — pulse of something alive
-            const tremolo = ctx.createOscillator();
-            tremolo.type = 'sine';
-            tremolo.frequency.setValueAtTime(7, now);
-            tremolo.frequency.linearRampToValueAtTime(1.5, now + duration);
-            const tremoloGain = ctx.createGain();
-            tremoloGain.gain.value = 0.4;
-            tremolo.connect(tremoloGain);
+            const rumbleGain = ctx.createGain();
+            rumbleGain.gain.setValueAtTime(0, now);
+            rumbleGain.gain.linearRampToValueAtTime(0.06, now + 0.2);
+            rumbleGain.gain.linearRampToValueAtTime(0, now + duration);
 
-            // Reverb simulation — convolution-like decay via delay feedback
-            const delay = ctx.createDelay(2.0);
-            delay.delayTime.value = 0.18;
-            const feedback = ctx.createGain();
-            feedback.gain.value = 0.65;
-            delay.connect(feedback);
-            feedback.connect(delay);
+            // Wind gain envelope — swell and fade
+            const windGain = ctx.createGain();
+            windGain.gain.setValueAtTime(0, now);
+            windGain.gain.linearRampToValueAtTime(0.35, now + 0.15);
+            windGain.gain.linearRampToValueAtTime(0.28, now + 1.0);
+            windGain.gain.linearRampToValueAtTime(0, now + duration);
 
-            // Low pass to keep it cavernous
-            const cave = ctx.createBiquadFilter();
-            cave.type = 'lowpass';
-            cave.frequency.setValueAtTime(300, now);
-            cave.frequency.linearRampToValueAtTime(60, now + duration);
+            const windGain2 = ctx.createGain();
+            windGain2.gain.setValueAtTime(0, now);
+            windGain2.gain.linearRampToValueAtTime(0.18, now + 0.3);
+            windGain2.gain.linearRampToValueAtTime(0, now + duration);
 
-            // Master gain
-            const master = ctx.createGain();
-            master.gain.setValueAtTime(0, now);
-            master.gain.linearRampToValueAtTime(0.35, now + 0.08);
-            master.gain.linearRampToValueAtTime(0.28, now + 1.2);
-            master.gain.linearRampToValueAtTime(0, now + duration);
+            // Connect
+            noise.connect(band);
+            band.connect(windGain);
+            windGain.connect(ctx.destination);
 
-            tremoloGain.connect(master.gain); // tremolo modulates master
+            noise.connect(band2);
+            band2.connect(windGain2);
+            windGain2.connect(ctx.destination);
 
-            descent.connect(master);
-            alien.connect(master);
-            rumble.connect(master);
-            master.connect(cave);
-            cave.connect(delay);
-            cave.connect(ctx.destination);
-            delay.connect(ctx.destination);
+            rumble.connect(rumbleGain);
+            rumbleGain.connect(ctx.destination);
 
-            descent.start(now); descent.stop(now + duration);
-            alien.start(now); alien.stop(now + duration);
+            noise.start(now); noise.stop(now + duration);
             rumble.start(now); rumble.stop(now + duration);
-            tremolo.start(now); tremolo.stop(now + duration);
         }
 
         // --- PORTAL LOGIC ---
