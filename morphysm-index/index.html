@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morphysm Index — Portal Array</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #050505;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+            color: #666;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .labyrinth-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 150px);
+            gap: 40px;
+            padding: 20px;
+        }
+
+        .volcanic-mirror {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(145deg, #1a1a1a, #000000);
+            border: 1px solid #2a2a2a;
+            box-shadow: 
+                inset 0 0 15px rgba(255,255,255,0.03),
+                0 0 20px rgba(0,0,0,1);
+            cursor: pointer;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Polish/sheen effect */
+        .volcanic-mirror::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255,255,255,0.02),
+                transparent
+            );
+            transform: rotate(45deg);
+            pointer-events: none;
+        }
+
+        .volcanic-mirror:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                inset 0 0 20px rgba(150,50,50,0.15),
+                0 0 30px rgba(150,50,50,0.3);
+            border-color: #4a2a2a;
+        }
+
+        /* Label inside mirror */
+        .mirror-label {
+            position: relative;
+            z-index: 2;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #333;
+            text-align: center;
+            padding: 10px;
+            line-height: 1.4;
+            transition: color 0.3s;
+        }
+
+        .volcanic-mirror:hover .mirror-label {
+            color: #665555;
+        }
+
+        /* Fall animation */
+        .falling {
+            transform: scale(50) !important;
+            opacity: 0 !important;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        /* Instructions */
+        .instruction {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #333;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-size: 10px;
+            z-index: 10;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 10;
+        }
+
+        .header h1 {
+            font-size: 13px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #444;
+            font-weight: normal;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: #2a2a2a;
+        }
+
+        /* Ambient background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(30,30,30,0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(30,30,30,0.3) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .labyrinth-grid {
+                grid-template-columns: repeat(2, 130px);
+                gap: 30px;
+            }
+            .volcanic-mirror {
+                width: 130px;
+                height: 130px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Morphysm Index</h1>
+        <p>Conceptual Navigation Array</p>
+    </div>
+
+    <div class="container">
+        <div class="labyrinth-grid">
+            <div class="volcanic-mirror" onclick="fallInto(this, 'ontology.html')">
+                <div class="mirror-label">Ontology<br>& Origin</div>
+            </div>
+            <div class="volcanic-mirror" onclick="fallInto(this, 'identity.html')">
+                <div class="mirror-label">Identity<br>& Self</div>
+            </div>
+            <div class="volcanic-mirror" onclick="fallInto(this, 'lineage.html')">
+                <div class="mirror-label">Luciferian<br>Lineage</div>
+            </div>
+            <div class="volcanic-mirror" onclick="fallInto(this, 'practice.html')">
+                <div class="mirror-label">Ritual<br>& Practice</div>
+            </div>
+            <div class="volcanic-mirror" onclick="fallInto(this, 'demonic.html')">
+                <div class="mirror-label">Demonic<br>Contact</div>
+            </div>
+            <div class="volcanic-mirror" onclick="fallInto(this, 'technology.html')">
+                <div class="mirror-label">Technology<br>& AI</div>
+            </div>
+            <div class="volcanic-mirror" onclick="fallInto(this, 'glossary.html')">
+                <div class="mirror-label">Complete<br>Glossary</div>
+            </div>
+            <div class="volcanic-mirror" onclick="fallInto(this, 'navigation.html')">
+                <div class="mirror-label">Reading<br>Paths</div>
+            </div>
+            <div class="volcanic-mirror" onclick="fallInto(this, 'cross-ref.html')">
+                <div class="mirror-label">Cross-<br>Reference</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="instruction">Select portal to enter index architecture</div>
+
+    <script>
+        function fallInto(element, url) {
+            element.classList.add('falling');
+            
+            setTimeout(() => {
+                window.location.href = url;
+            }, 800);
+        }
+
+        // Subtle ambient animation on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const mirrors = document.querySelectorAll('.volcanic-mirror');
+            mirrors.forEach((mirror, index) => {
+                setTimeout(() => {
+                    mirror.style.opacity = '0';
+                    mirror.style.transform = 'scale(0.8)';
+                    setTimeout(() => {
+                        mirror.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                        mirror.style.opacity = '1';
+                        mirror.style.transform = 'scale(1)';
+                    }, 50);
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
