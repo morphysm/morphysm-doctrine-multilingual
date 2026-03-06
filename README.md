@@ -9,7 +9,7 @@ Morphysm is a transdisciplinary framework exploring post-anthropocentric cogniti
 ## 🌐 Interactive Index / インタラクティブ・インデックス
 
 Explore the interactive web interface:  
-**→ 
+**→ https://morphysm.github.io/morphystic-doctrine-multilingual/morphysm-index/index.html
 
 
 ## 📚 Full Materials / 完全版資料
